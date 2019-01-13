@@ -1,6 +1,6 @@
 # ImproVisionNet
 
-One Paragraph of project description goes here
+ImPro Vision Net is a middleware that isolates the application from the threading and network stack of operating system It enables the use of multiple threads of execution with shared data without having to program using specific functions depends on operating system. It also allows sending and receiving information without having to program using lower-level protocols such as sockets. Then, researchers can focus on the specific purpose of their applications rather than handle multiple threads or passing information between applications.
 
 ## Getting Started
 
