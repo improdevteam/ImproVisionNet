@@ -1,29 +1,28 @@
 // std
-#include <iostream>
-
-// boost
-#include <boost/filesystem.hpp>
+#include <fstream>
+#include <filesystem>
+#include <memory>
 
 // impro
 #include <impro/data/arraypoint2d.hpp>
 
 using namespace std;
-using namespace boost;
 using namespace cv;
 
 namespace impro { namespace data
 {
 
-Data* ArrayPoint2d::newPtr()
+shared_ptr<Data> ArrayPoint2d::newPtr()
 {
-    return new ArrayPoint2d();
+    ArrayPoint2d *data = new ArrayPoint2d();
+    return shared_ptr<Data>(data);
 }
 
-Data* ArrayPoint2d::clone()
+shared_ptr<Data> ArrayPoint2d::clone()
 {
     ArrayPoint2d *data = new ArrayPoint2d();
     data->vec_ = vec_;
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ArrayPoint2d::clone(Data &data)
@@ -37,10 +36,10 @@ void ArrayPoint2d::save(const string &dir,
 {
     string fullPath(dir);
     fullPath.append("/").append(id);
-    ofstream outputFile(fullPath.c_str());
+    ofstream ofs(fullPath.c_str());
     for(size_t i = 0; i < vec_.size(); ++i)
-        outputFile << vec_.at(i).x << " "
-                   << vec_.at(i).y << std::endl;
+        ofs << vec_.at(i).x << " "
+            << vec_.at(i).y << std::endl;
 
 }
 
@@ -68,8 +67,8 @@ void ArrayPoint2d::remove(const string &dir,
 {
     std::string fullPath(dir);
     fullPath.append("/").append(id);
-    boost::filesystem::path pathToRemove(fullPath);
-    boost::filesystem::remove(pathToRemove);
+    filesystem::path pathToRemove(fullPath);
+    filesystem::remove(pathToRemove);
 }
 
 uint ArrayPoint2d::serialize(std::vector<uchar> &raw,

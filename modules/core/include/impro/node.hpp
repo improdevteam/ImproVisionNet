@@ -23,9 +23,19 @@ namespace impro
     {
     public:
         /**
+         * @brief Node is not copyable
+         */
+        Node( const Node & ) = delete;
+
+        /**
+         * @brief Node is not copyable
+         */
+        Node& operator=(const Node& other)  = delete;
+
+        /**
          * @brief ~Node
          */
-        virtual ~Node();
+        virtual ~Node() {}
 
         /**
          * @brief getId

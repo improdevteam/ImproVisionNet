@@ -1,22 +1,18 @@
 // std
-#include <iostream>
-
-// boost
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 // impro
 #include <impro/space.hpp>
 #include <impro/node.hpp>
 
 using namespace std;
-using namespace boost;
 
 namespace impro
 {
 
-Space::Space(const std::string &id,
-             const std::string &dir)
-    : id_(id), dir_(dir), node_(NULL)
+Space::Space(const string &id,
+             const string &dir)
+    : id_(id), dir_(dir), node_(nullptr)
 {
     filesystem::path d(dir_);
     if(!filesystem::exists(d))
@@ -25,10 +21,10 @@ Space::Space(const std::string &id,
 
 Space::~Space()
 {
-    if(node_ != NULL)
+    if(node_ != nullptr)
     {
         delete node_;
-        node_ = NULL;
+        node_ = nullptr;
     }
 }
 

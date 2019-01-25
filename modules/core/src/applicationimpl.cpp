@@ -1,9 +1,6 @@
 // std
 #include <iostream> // debug
 
-// boost
-#include <boost/foreach.hpp>
-
 // impro
 #include <impro/private/applicationimpl.hpp>
 #include <impro/processcreator.hpp>
@@ -15,25 +12,25 @@
 #include <impro/errors.hpp>
 
 using namespace std;
-using namespace boost;
 
 namespace impro
 {
 
-Application *application_ = NULL;
+static Application *application_ = nullptr;
+
 Application& Application::Initialize()
 {
-    if(application_ == NULL)
+    if(application_ == nullptr)
         application_ = new ApplicationImpl();
     return *application_;
 }
 
 void Application::Finalize()
 {
-    if(application_ != NULL)
+    if(application_ != nullptr)
     {
         delete application_;
-        application_ = NULL;
+        application_ = nullptr;
     }
 
     //
@@ -44,17 +41,17 @@ void Application::Finalize()
 
 Application& Application::getInstance()
 {
-    if(application_ == NULL)
+    if(application_ == nullptr)
         application_ = new ApplicationImpl();
     return *application_;
 }
 
 void Application::releaseInstance()
 {
-    if(application_ != NULL)
+    if(application_ != nullptr)
     {
         delete application_;
-        application_ = NULL;
+        application_ = nullptr;
     }
 }
 
@@ -64,28 +61,33 @@ void Application::releaseInstance()
 //    return application_;
 //}
 
+ApplicationImpl::ApplicationImpl()
+{
+
+}
+
 ApplicationImpl::~ApplicationImpl()
 {
     // Clear Process
-    BOOST_FOREACH(ProcessMap::value_type &item, processes_)
+    for(auto &item : processes_)
     {
         Process *process = item.second;
-        if(process)
+        if(process != nullptr)
         {
             delete process;
-            process = NULL;
+            process = nullptr;
         }
     }
     processes_.clear();
 
     // Clear Space
-    BOOST_FOREACH(SpaceMap::value_type &item, spaces_)
+    for(auto &item : spaces_)
     {
         Space *space = item.second;
-        if(space)
+        if(space != nullptr)
         {
             delete space;
-            space = NULL;
+            space = nullptr;
         }
     }
     spaces_.clear();
@@ -118,35 +120,48 @@ Process& ApplicationImpl::getProcess(const string &id)
 void ApplicationImpl::activate(const string &id,
                                bool block)
 {
+
+    // ToDo: bug fix... for id only
     ProcessMap::iterator iter = processes_.find(id);
     if(iter != processes_.end() &&
        iter->second->getStatus() != Process::running)
     {
-//        thread *t = threads_.create_thread(boost::bind(&Process::run,
-//                                                       iter->second));
-        threads_.create_thread(boost::bind(&Process::run, iter->second));
-//        processThreads_.insert(ProcessThreadMap::value_type(id, t));
+        thread *t = new thread(&Process::run, iter->second);
+        threads_.push_back(t);
     }
 
     if(block)
-        threads_.join_all();
+    {
+        for (auto &thread : threads_)
+        {
+            if (thread->joinable())
+                thread->join();
+        }
+    }
 }
 
 void ApplicationImpl::activate(bool block)
 {
-    BOOST_FOREACH(ProcessMap::value_type &item, processes_)
+     // ToDo: bug fix
+    for(auto &item : processes_)
     {
         string id = item.first;
         Process *process = item.second;
         if(process->getStatus() != Process::running)
         {
-            thread *t = threads_.create_thread(boost::bind(&Process::run, process));
-            processThreads_.insert(ProcessThreadMap::value_type(id, t));
+            thread *t = new thread(&Process::run, process);
+            threads_.push_back(t);
         }
     }
 
     if(block)
-        threads_.join_all();
+    {
+        for (auto &thread : threads_)
+        {
+            if (thread->joinable())
+                thread->join();
+        }
+    }
 }
 
 void ApplicationImpl::deactivate(const string &id)
@@ -156,20 +171,19 @@ void ApplicationImpl::deactivate(const string &id)
        iter->second->getStatus() == Process::running)
     {
         iter->second->interrupt();
-        processThreads_.erase(iter->first);
     }
 }
 
 void ApplicationImpl::deactivate()
 {
-    BOOST_FOREACH(ProcessMap::value_type &item, processes_)
+    // ToDo: bug fix
+    for(auto &item : processes_)
     {
         string id  = item.first;
         Process *process = item.second;
         if(process->getStatus() == Process::running)
         {
             process->interrupt();
-            processThreads_.erase(id);
         }
     }
 }

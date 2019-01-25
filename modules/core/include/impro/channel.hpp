@@ -4,6 +4,7 @@
 // std
 #include <string>
 #include <vector>
+#include <memory>
 
 // opencv
 #include <opencv2/core.hpp>
@@ -21,24 +22,39 @@ namespace impro
     {
     public:
         /**
-         * @brief current - important!! You must delete return pointer!!!
-         * @return
+         * @brief Channel is not copyable
          */
-        virtual Data* current();
+        Channel(const Channel& ) = delete;
 
         /**
-         * @brief prev - important!! You must delete return pointer!!!
+         * @brief Channel is not copyable
+         */
+        Channel& operator=(const Channel& other)  = delete;
+
+        /**
+         * @brief ~Channel
+         */
+        virtual ~Channel() {}
+
+        /**
+         * @brief current
+         * @return
+         */
+        virtual std::shared_ptr<impro::Data> current();
+
+        /**
+         * @brief prev
          * @param n
          * @return
          */
-        virtual Data* prev(unsigned int n = 1);
+        virtual std::shared_ptr<Data> prev(unsigned long long n = 1);
 
         /**
-         * @brief at - important!! You must delete return pointer!!!
+         * @brief at
          * @param n
          * @return
          */
-        virtual Data* at(unsigned int n);
+        virtual std::shared_ptr<impro::Data> at(unsigned long long n);
 
         /**
          * @brief current
@@ -88,7 +104,7 @@ namespace impro
          * @brief total
          * @return
          */
-        virtual unsigned int total();
+        virtual unsigned long long total();
 
         /**
          * @brief subscribe
@@ -124,7 +140,7 @@ namespace impro
          * @brief getLimit
          * @return
          */
-        unsigned int getLimit() { return limit_; }
+        unsigned long long getLimit() { return limit_; }
 
         /**
          * @brief getNode
@@ -172,10 +188,10 @@ namespace impro
         std::string dataType_;
         std::string id_;
         std::string dir_;
-        unsigned int limit_;
+        unsigned long long limit_;
         Node &node_;
-        unsigned int idx_;
-        Data *data_;
+        unsigned long long idx_;
+        std::shared_ptr<Data> data_;
         std::vector<std::string> dataIds_;
         std::vector<ChannelObserver*> observers_;
     };

@@ -1,29 +1,28 @@
 // std
-#include <iostream>
-
-// boost
-#include <boost/filesystem.hpp>
+#include <fstream>
+#include <filesystem>
+#include <memory>
 
 // impro
 #include <impro/data/arraypoint2f.hpp>
 
 using namespace std;
-using namespace boost;
 using namespace cv;
 
 namespace impro { namespace data
 {
 
-Data* ArrayPoint2f::newPtr()
+shared_ptr<Data> ArrayPoint2f::newPtr()
 {
-    return new ArrayPoint2f();
+    ArrayPoint2f *data = new ArrayPoint2f();
+    return shared_ptr<Data>(data);
 }
 
-Data* ArrayPoint2f::clone()
+shared_ptr<Data> ArrayPoint2f::clone()
 {
     ArrayPoint2f *data = new ArrayPoint2f();
     data->vec_ = vec_;
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ArrayPoint2f::clone(Data &data)
@@ -68,8 +67,8 @@ void ArrayPoint2f::remove(const string &dir,
 {
     std::string fullPath(dir);
     fullPath.append("/").append(id);
-    boost::filesystem::path pathToRemove(fullPath);
-    boost::filesystem::remove(pathToRemove);
+    filesystem::path pathToRemove(fullPath);
+    filesystem::remove(pathToRemove);
 }
 
 uint ArrayPoint2f::serialize(std::vector<uchar> &raw,

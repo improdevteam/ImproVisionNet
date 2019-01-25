@@ -20,6 +20,27 @@ namespace impro
     {
     public:
         /**
+         * @brief default move
+         */
+        Space(Space &&) = default;
+
+
+        /**
+         * @brief default move
+         */
+        Space& operator=(Space&& other) = default;
+
+        /**
+         * @brief Space is not copyable
+         */
+        Space( const Space & ) = delete;
+
+        /**
+         * @brief Space is not copyable
+         */
+        Space& operator=(const Space& other)  = delete;
+
+        /**
          * @brief ~Space
          */
         virtual ~Space();

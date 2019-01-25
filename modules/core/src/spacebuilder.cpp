@@ -1,11 +1,7 @@
-//boost
-#include <boost/foreach.hpp>
-
 // impro
 #include <impro/spacebuilder.hpp>
 
 using namespace std;
-using namespace boost;
 
 namespace impro
 {
@@ -13,7 +9,7 @@ namespace impro
 SpaceBuilderMap SpaceBuilder::Builders_;
 
 void SpaceBuilder::Prepare(const std::string &type,
-                              SpaceBuilder &builder)
+                              SpaceBuilder &&builder)
 {
     if(Builders_.find(type) == Builders_.end())
     {
@@ -22,10 +18,9 @@ void SpaceBuilder::Prepare(const std::string &type,
         Builders_.insert(SpaceBuilderMap::value_type(type, spaceBuilder));
     }
 }
-
 void SpaceBuilder::Release()
 {
-    BOOST_FOREACH(SpaceBuilderMap::value_type &item, Builders_)
+    for(auto &item : Builders_)
     {
         item.second->release();
         delete item.second;

@@ -1,6 +1,7 @@
 // std
 #include <iostream> // debug
 #include <fstream>
+#include <memory>
 
 // boost
 #include <boost/format.hpp>
@@ -285,7 +286,7 @@ void AlljoynRemoteChannel::FileIsReady(const InterfaceDescription::Member *membe
             vecAcc.push_back(acc);
         }
 
-        data::ImageAcc* imgAcc = dynamic_cast<data::ImageAcc*>(data_);
+        std::shared_ptr<data::ImageAcc> imgAcc = static_pointer_cast<data::ImageAcc>(data_);
         imgAcc->image_.mat_ = mat;
         imgAcc->acc_.vec_ = vecAcc;
         data_->save(dir_, dataId);

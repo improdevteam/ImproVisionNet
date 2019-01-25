@@ -1,21 +1,24 @@
-QT -= qt core gui
+TEMPLATE = lib
+
+CONFIG += shared c++17
+
+CONFIG -= app_bundle
+
+CONFIG -= qt
 
 TARGET = impro_core
 
-TEMPLATE = lib
-
 VERSION = "1.0.0"
 
-DESTDIR += $(IMPRO_HOME)/build/lib
+DESTDIR += $$PWD/../../build/lib
 
-DLLDESTDIR += $(IMPRO_HOME)/build/bin
+DLLDESTDIR += $$PWD/../../build/bin
 
 DEFINES += IMPROAPI_EXPORTS
 
 INCLUDEPATH += \
     $$PWD/include \
-    $(OPENCV_HOME)/include \
-    $(BOOST_HOME)
+    $(OPENCV_HOME)/include
 
 HEADERS += \
     include/impro/defines.hpp \
@@ -69,12 +72,6 @@ SOURCES += \
     src/data/imageaccpts.cpp
 
 win32 {
-    # boost library
-    LIBS += -L$(BOOST_HOME)/stage/lib \
-            -llibboost_system-vc141-mt-x64-1_68 \
-            -llibboost_filesystem-vc141-mt-x64-1_68 \
-            -llibboost_thread-vc141-mt-x64-1_68
-
     # opencv library
     LIBS += -L$(OPENCV_HOME)/x64/vc15/lib \
             -lopencv_world343
@@ -82,12 +79,6 @@ win32 {
 }
 
 unix {
-    # boost library
-    LIBS += -L$(BOOST_HOME)/stage/lib \
-            -lboost_system \
-            -lboost_filesystem \
-            -lboost_thread
-
     # opencv library
     LIBS += -L$(OPENCV_HOME)/lib \
             -lopencv_core \

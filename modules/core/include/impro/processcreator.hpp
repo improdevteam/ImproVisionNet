@@ -18,7 +18,25 @@ namespace impro
     class IMPRO_EXPORTS ProcessCreator
     {
     public:
+        /**
+         * @brief Constructor
+         */
         ProcessCreator() {}
+
+        /**
+         * @brief ProcessCreator is not copyable
+         */
+        ProcessCreator( const ProcessCreator & ) = delete;
+
+        /**
+         * @brief Process is not copyable
+         */
+        ProcessCreator& operator=(const ProcessCreator& other)  = delete;
+
+        /**
+         * @brief ~Process
+         */
+        virtual ~ProcessCreator() {}
 
         /**
          * @brief create process

@@ -3,9 +3,8 @@
 
 // std
 #include <map>
-
-// boost
-#include <boost/thread.hpp>
+#include <vector>
+#include <thread>
 
 // impro
 #include <impro/application.hpp>
@@ -15,9 +14,10 @@ namespace impro
     class Space;
 
     typedef std::map<std::string, Process*> ProcessMap;
-    typedef std::map<std::string, boost::thread*> ProcessThreadMap;
 
     typedef std::map<std::string, Space*> SpaceMap;
+
+    typedef std::vector<std::thread*> ThreadGroup;
 
     /**
      * @brief The Impro Application class
@@ -25,6 +25,11 @@ namespace impro
     class IMPRO_EXPORTS ApplicationImpl : public Application
     {
     public:
+        /**
+         * @brief ApplicationImpl
+         */
+        ApplicationImpl();
+
         /**
          * @brief ~ApplicationImpl
          */
@@ -101,9 +106,8 @@ namespace impro
         virtual Space& getSpace(const std::string &spaceId);
 
     protected:
-        boost::thread_group threads_;
+        ThreadGroup threads_;
         ProcessMap processes_;
-        ProcessThreadMap processThreads_;
         SpaceMap spaces_;
     };
 }

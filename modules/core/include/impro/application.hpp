@@ -28,6 +28,15 @@ namespace impro
         static void releaseInstance();
 
     public:
+        /**
+         * @brief Application is not copyable
+         */
+        Application( const Application & ) = delete;
+
+        /**
+         * @brief Application is not copyable
+         */
+        Application& operator=(const Application& other)  = delete;
 
         /**
          * @brief ~Application
@@ -104,7 +113,10 @@ namespace impro
         virtual Space& getSpace(const std::string &spaceId) = 0;
 
     protected:
-        Application(){}
+        Application() {}
+
+
+
 
     };
 }

@@ -23,13 +23,13 @@ namespace impro
              * @brief newPtr
              * @return
              */
-            virtual Data* newPtr();
+            virtual std::shared_ptr<Data> newPtr();
 
             /**
              * @brief Creates a full copy of the underlying data.
              * @return pointer of new data
              */
-            virtual Data* clone();
+            virtual std::shared_ptr<Data> clone();
 
             /**
              * @brief full copy underlying data to user given input

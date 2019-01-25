@@ -1,3 +1,4 @@
+#include <memory>
 #include <impro/data/imagepts.hpp>
 
 using namespace std;
@@ -6,17 +7,18 @@ using namespace cv;
 namespace impro { namespace data
 {
 
-Data* ImagePts::newPtr()
+shared_ptr<Data> ImagePts::newPtr()
 {
-    return new ImagePts();
+    ImagePts *data = new ImagePts();
+    return shared_ptr<Data>(data);
 }
 
-Data* ImagePts::clone()
+shared_ptr<Data> ImagePts::clone()
 {
     ImagePts *data = new ImagePts();
     image_.clone(data->image_);
     pts_.clone(data->pts_);
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ImagePts::clone(Data &data)

@@ -1,11 +1,7 @@
-//boost
-#include <boost/foreach.hpp>
-
 // impro
 #include <impro/interfacecreator.hpp>
 
 using namespace std;
-using namespace boost;
 
 namespace impro
 {
@@ -13,7 +9,7 @@ namespace impro
 InterfaceCreatorMap InterfaceCreator::Creators_;
 
 void InterfaceCreator::Prepare(const std::string &type,
-                               InterfaceCreator  &creator)
+                               InterfaceCreator  &&creator)
 {
     if(Creators_.find(type) == Creators_.end())
     {
@@ -24,7 +20,7 @@ void InterfaceCreator::Prepare(const std::string &type,
 
 void InterfaceCreator::Release()
 {
-    BOOST_FOREACH(InterfaceCreatorMap::value_type &item, Creators_)
+    for(auto &item : Creators_)
     {
         delete item.second;
     }

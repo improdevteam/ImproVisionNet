@@ -3,6 +3,7 @@
 
 // std
 #include <map>
+#include <memory>
 
 // impro
 #include <impro/defines.hpp>
@@ -11,7 +12,7 @@ namespace impro
 {
     class Data;
 
-    typedef std::map<std::string, Data*> DataTypeMap;
+    typedef std::map<std::string, std::shared_ptr<Data>> DataTypeMap;
 
     class IMPRO_EXPORTS DataType
     {
@@ -23,7 +24,7 @@ namespace impro
          * @param data
          */
         static void Prepare(const std::string &type,
-                            Data &data);
+                            Data &&data);
 
         /**
          * @brief Release

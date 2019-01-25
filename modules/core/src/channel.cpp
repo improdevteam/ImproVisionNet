@@ -1,6 +1,6 @@
-// boost
-#include <boost/filesystem.hpp>
-#include <boost/range/algorithm/remove.hpp>
+// std
+#include <filesystem>
+#include <algorithm>
 
 // impro
 #include <impro/datatype.hpp>
@@ -10,7 +10,6 @@
 #include <impro/channelobserver.hpp>
 
 using namespace std;
-using namespace boost;
 
 namespace impro
 {
@@ -35,30 +34,30 @@ Channel::Channel(const std::string &dataType,
     data_ = DataType::DataTypes_.at(dataType_)->newPtr();
 }
 
-Data* Channel::current()
+std::shared_ptr<Data> Channel::current()
 {
     return data_->clone();
 }
 
-Data* Channel::prev(unsigned int n)
+std::shared_ptr<Data> Channel::prev(unsigned long long n)
 {
     if(limit_ == 0)
         return data_->clone();
 
-    unsigned int idx = 0;
+    unsigned long long idx = 0;
     if(n > idx_ && total() == limit_)
         idx = idx_ + limit_ - n;
     else if(n < idx_)
         idx = idx_ - n;
-    Data *data = data_->newPtr();
+    shared_ptr<Data> data = data_->newPtr();
     string dataId = dataIds_.at(idx);
     data->load(dir_, dataId);
     return data;
 }
 
-Data* Channel::at(unsigned int n)
+shared_ptr<Data> Channel::at(unsigned long long n)
 {
-    Data *data = data_->newPtr();
+    shared_ptr<Data> data = data_->newPtr();
     string dataId = dataIds_.at(n);
     data->load(dir_, dataId);
     return data;
@@ -75,7 +74,7 @@ void Channel::prev(Data &data, unsigned int n)
         data_->clone(data);
     else
     {
-        unsigned int idx = 0;
+        unsigned long long idx = 0;
         if(n > idx_ && total() == limit_)
             idx = idx_ + limit_ - n;
         else if(n < idx_)
@@ -104,7 +103,7 @@ string Channel::prevDataId(unsigned int n)
     if(limit_ == 0)
         return string("");
 
-    unsigned int idx = 0;
+    unsigned long long idx = 0;
     if(total() == limit_)
         idx = idx_ + limit_ - n;
     else if(n < idx_)
@@ -117,7 +116,7 @@ string Channel::atDataId(unsigned int n)
     return  dataIds_.at(n);
 }
 
-unsigned int Channel::total()
+unsigned long long Channel::total()
 {
     return dataIds_.size();
 }
@@ -129,7 +128,7 @@ void Channel::subscribe(ChannelObserver *observer)
 
 void Channel::unsubscribe(ChannelObserver *observer)
 {
-    observers_.erase(boost::remove(observers_, observer), observers_.end());
+    observers_.erase(remove(observers_.begin(), observers_.end(), observer), observers_.end());
 }
 
 void Channel::setLimit(unsigned limit)
@@ -146,7 +145,7 @@ void Channel::save(const std::string &dataId,
 
     data_->save(dir_, dataId);
 
-    unsigned int n = total();
+    unsigned long long n = total();
     if(n < limit_)
     {
         dataIds_.push_back(dataId);
@@ -176,7 +175,7 @@ void Channel::save(const string &dataId,
 
     data_->save(dir_, dataId);
 
-    unsigned int n = total();
+    unsigned long long n = total();
     if(n < limit_)
     {
         dataIds_.push_back(dataId);

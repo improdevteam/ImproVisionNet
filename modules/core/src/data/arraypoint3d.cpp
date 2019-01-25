@@ -1,29 +1,28 @@
 // std
-#include <iostream>
-
-// boost
-#include <boost/filesystem.hpp>
+#include <fstream>
+#include <filesystem>
+#include <memory>
 
 // impro
 #include <impro/data/arraypoint3d.hpp>
 
 using namespace std;
-using namespace boost;
 using namespace cv;
 
 namespace impro { namespace data
 {
 
-Data* ArrayPoint3d::newPtr()
+shared_ptr<Data> ArrayPoint3d::newPtr()
 {
-    return new ArrayPoint3d();
+    ArrayPoint3d *data = new ArrayPoint3d();
+    return shared_ptr<Data>(data);
 }
 
-Data* ArrayPoint3d::clone()
+shared_ptr<Data> ArrayPoint3d::clone()
 {
     ArrayPoint3d *data = new ArrayPoint3d();
     data->vec_ = vec_;
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ArrayPoint3d::clone(Data &data)
@@ -67,8 +66,8 @@ void ArrayPoint3d::remove(const string &dir,
 {
     std::string fullPath(dir);
     fullPath.append("/").append(id);
-    boost::filesystem::path pathToRemove(fullPath);
-    boost::filesystem::remove(pathToRemove);
+    filesystem::path pathToRemove(fullPath);
+    filesystem::remove(pathToRemove);
 }
 
 uint ArrayPoint3d::serialize(std::vector<uchar> &raw,

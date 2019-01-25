@@ -29,7 +29,7 @@ namespace impro
          * @param builder
          */
         static void Prepare(const std::string &type,
-                            InterfaceCreator &creator);
+                            InterfaceCreator &&creator);
 
         /**
          * @brief Release
@@ -40,6 +40,27 @@ namespace impro
         static InterfaceCreatorMap Creators_;
 
     public:
+        /**
+         * @brief InterfaceCreator
+         */
+        InterfaceCreator() {}
+
+        /**
+         * @brief InterfaceCreator is not copyable
+         */
+        InterfaceCreator( const InterfaceCreator & ) = delete;
+
+        /**
+         * @brief InterfaceCreator is not copyable
+         */
+        InterfaceCreator& operator=(const InterfaceCreator& other)  = delete;
+
+        /**
+         * @brief ~InterfaceCreator
+         */
+        virtual ~InterfaceCreator() {}
+
+
         /**
          * @brief newPtr
          * @return

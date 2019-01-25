@@ -1,8 +1,5 @@
 // std
-#include <iostream> // debug
-
-// boost
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 // impro
 #include <impro/space.hpp>
@@ -10,13 +7,12 @@
 #include <impro/interfacecreator.hpp>
 
 using namespace std;
-using namespace boost;
 
 namespace impro
 {
 
 // Class Node ------------------------------------------------
-Node::Node(const std::string &id,
+Node::Node(const string &id,
            Space &space)
     : id_(id), space_(space)
 {
@@ -25,10 +21,6 @@ Node::Node(const std::string &id,
     filesystem::path d(dir_);
     if(!filesystem::exists(d))
         filesystem::create_directories(d);
-}
-
-Node::~Node()
-{
 }
 
 // Class LocalNode ------------------------------------------------

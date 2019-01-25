@@ -3,6 +3,7 @@
 
 // std
 #include <vector>
+#include <memory>
 
 // opencv
 #include <opencv2/core.hpp>
@@ -18,19 +19,44 @@ namespace impro
     class IMPRO_EXPORTS Data
     {
     public:
+        /**
+         * @brief default move
+         */
+        Data(Data &&) = default;
+
+
+        /**
+         * @brief default move
+         */
+        Data& operator=(Data&& other) = default;
+
+        /**
+         * @brief default copy
+         */
+        Data( const Data & ) = default;
+
+        /**
+         * @brief default copy
+         */
+        Data& operator=(const Data& other)  = default;
+
+        /**
+         * @brief ~Data
+         */
         virtual ~Data() {}
+
 
         /**
          * @brief newPtr
          * @return
          */
-        virtual Data* newPtr() = 0;
+        virtual std::shared_ptr<Data> newPtr() = 0;
 
         /**
          * @brief Creates a full copy of the underlying data.
          * @return pointer of new data
          */
-        virtual Data* clone() = 0;
+        virtual std::shared_ptr<Data> clone() = 0;
 
         /**
          * @brief full copy underlying data to user given input
@@ -79,6 +105,12 @@ namespace impro
          */
         virtual uint deserialize(std::vector<uchar> &raw,
                                  uint offset = 0) = 0;
+
+    protected:
+        /**
+         * @brief Data
+         */
+        Data() {}
     };
 }
 

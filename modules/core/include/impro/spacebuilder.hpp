@@ -29,7 +29,7 @@ namespace impro
          * @param builder
          */
         static void Prepare(const std::string &type,
-                            SpaceBuilder &builder);
+                            SpaceBuilder &&builder);
 
         /**
          * @brief Release
@@ -40,6 +40,21 @@ namespace impro
         static SpaceBuilderMap Builders_;
 
     public:
+        /**
+         * @brief SpaceBuilder is not copyable
+         */
+        SpaceBuilder( const SpaceBuilder & ) = delete;
+
+        /**
+         * @brief SpaceBuilder is not copyable
+         */
+        SpaceBuilder& operator=(const SpaceBuilder& other)  = delete;
+
+        /**
+         * @brief ~SpaceBuilder
+         */
+        virtual ~SpaceBuilder() {}
+
         /**
          * @brief clone
          * @return
@@ -66,6 +81,8 @@ namespace impro
         virtual Space* build(const std::string &spaceId,
                              const std::string &nodeId,
                              const std::string &dir) = 0;
+    protected:
+        SpaceBuilder() {}
     };
 }
 

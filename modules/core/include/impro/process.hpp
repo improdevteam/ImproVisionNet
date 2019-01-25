@@ -28,9 +28,21 @@ namespace impro
         Process(const std::string &id,
                 const std::string &dir,
                 Application &app)
-            : id_(id), dir_(dir),
-              app_(app), status_(stopped) {}
+            : status_(stopped), id_(id), dir_(dir), app_(app) {}
 
+        /**
+         * @brief Process is not copyable
+         */
+        Process( const Process & ) = delete;
+
+        /**
+         * @brief Process is not copyable
+         */
+        Process& operator=(const Process& other)  = delete;
+
+        /**
+         * @brief ~Process
+         */
         virtual ~Process() {}
 
         /**

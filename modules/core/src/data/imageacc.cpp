@@ -1,3 +1,4 @@
+#include <memory>
 #include <impro/data/imageacc.hpp>
 
 using namespace std;
@@ -6,17 +7,18 @@ using namespace cv;
 namespace impro { namespace data
 {
 
-Data* ImageAcc::newPtr()
+shared_ptr<Data> ImageAcc::newPtr()
 {
-    return new ImageAcc();
+    ImageAcc *data = new ImageAcc();
+    return shared_ptr<Data>(data);
 }
 
-Data* ImageAcc::clone()
+shared_ptr<Data> ImageAcc::clone()
 {
     ImageAcc *data = new ImageAcc();
     image_.clone(data->image_);
     acc_.clone(data->acc_);
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ImageAcc::clone(Data &data)

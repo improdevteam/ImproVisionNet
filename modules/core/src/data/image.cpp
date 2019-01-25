@@ -1,8 +1,7 @@
 // std
-#include <iostream>
-
-// boost
-#include <boost/filesystem.hpp>
+#include <fstream>
+#include <filesystem>
+#include <memory>
 
 // opencv
 #include <opencv2/highgui.hpp>
@@ -11,22 +10,22 @@
 #include <impro/data/image.hpp>
 
 using namespace std;
-using namespace boost;
 using namespace cv;
 
 namespace impro { namespace data
 {
 
-Data* Image::newPtr()
+shared_ptr<Data> Image::newPtr()
 {
-    return new Image();
+    Image *data = new Image();
+    return shared_ptr<Data>(data);
 }
 
-Data* Image::clone()
+shared_ptr<Data> Image::clone()
 {
     Image *data = new Image();
     data->mat_ = mat_.clone();
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void Image::clone(Data &data)

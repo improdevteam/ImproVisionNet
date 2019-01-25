@@ -1,20 +1,24 @@
-QT       -= qt core gui
+TEMPLATE = lib
+
+CONFIG += shared c++17
+
+CONFIG -= app_bundle
+
+CONFIG -= qt
 
 TARGET = impro_alljoyn
 
-TEMPLATE = lib
-
 VERSION = "1.0.0"
 
-DESTDIR += $(IMPRO_HOME)/build/lib
+DESTDIR += $$PWD/../../build/lib
 
-DLLDESTDIR += $(IMPRO_HOME)/build/bin
+DLLDESTDIR += $$PWD/../../build/bin
 
 DEFINES += IMPROAPI_EXPORTS
 
 INCLUDEPATH += \
     $$PWD/include \
-    $(IMPRO_HOME)/build/inc \
+    $$PWD/../../include \
     $(OPENCV_HOME)/include \
     $(BOOST_HOME) \
     $(AJ_DIST)/cpp/inc

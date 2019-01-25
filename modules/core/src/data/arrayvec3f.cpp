@@ -1,8 +1,7 @@
 // std
-#include <iostream>
-
-// boost
-#include <boost/filesystem.hpp>
+#include <fstream>
+#include <filesystem>
+#include <memory>
 
 // opencv
 #include <opencv2/highgui.hpp>
@@ -11,22 +10,22 @@
 #include <impro/data/arrayvec3f.hpp>
 
 using namespace std;
-using namespace boost;
 using namespace cv;
 
 namespace impro { namespace data
 {
 
-Data* ArrayVec3f::newPtr()
+shared_ptr<Data> ArrayVec3f::newPtr()
 {
-    return new ArrayVec3f();
+    ArrayVec3f *data = new ArrayVec3f();
+    return shared_ptr<Data>(data);
 }
 
-Data* ArrayVec3f::clone()
+shared_ptr<Data> ArrayVec3f::clone()
 {
     ArrayVec3f *data = new ArrayVec3f();
     data->vec_ = vec_;
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ArrayVec3f::clone(Data &data)
@@ -70,8 +69,8 @@ void ArrayVec3f::remove(const string &dir,
 {
     std::string fullPath(dir);
     fullPath.append("/").append(id);
-    boost::filesystem::path pathToRemove(fullPath);
-    boost::filesystem::remove(pathToRemove);
+    filesystem::path pathToRemove(fullPath);
+    filesystem::remove(pathToRemove);
 }
 
 uint ArrayVec3f::serialize(std::vector<uchar> &raw,

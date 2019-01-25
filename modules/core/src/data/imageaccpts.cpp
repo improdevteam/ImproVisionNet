@@ -1,5 +1,7 @@
 // boost
-#include <boost/filesystem.hpp>
+#include <fstream>
+#include <filesystem>
+#include <memory>
 
 // impro
 #include <impro/data/imageaccpts.hpp>
@@ -10,18 +12,19 @@ using namespace cv;
 namespace impro { namespace data
 {
 
-Data* ImageAccPts::newPtr()
+shared_ptr<Data> ImageAccPts::newPtr()
 {
-    return new ImageAccPts();
+    ImageAccPts *data = new ImageAccPts();
+    return shared_ptr<Data>(data);
 }
 
-Data* ImageAccPts::clone()
+shared_ptr<Data> ImageAccPts::clone()
 {
     ImageAccPts *data = new ImageAccPts();
     image_.clone(data->image_);
     acc_.clone(data->acc_);
     pts_.clone(data->pts_);
-    return data;
+    return shared_ptr<Data>(data);
 }
 
 void ImageAccPts::clone(Data &data)

@@ -15,6 +15,27 @@ namespace impro
     {
     public:
         /**
+         * @brief default move
+         */
+        Interface(Interface &&) = default;
+
+
+        /**
+         * @brief default move
+         */
+        Interface& operator=(Interface&& other) = default;
+
+        /**
+         * @brief Interface is not copyable
+         */
+        Interface( const Interface & ) = delete;
+
+        /**
+         * @brief Interface is not copyable
+         */
+        Interface& operator=(const Interface& other)  = delete;
+
+        /**
          * @brief ~Interface
          */
         virtual ~Interface() {}
